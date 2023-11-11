@@ -47,6 +47,25 @@ def get_notes_date(date_str: str):
                 continue
     return notes
 
+# Test
+def del_notes_title(target_title: str):
+    notes = ""
+    cash = ""
+    with open("notes.txt", mode='r', encoding="utf-8") as file:
+        for line in file.readlines():
+            cash += line
+            if cash.endswith(end + '\n'):
+                if cash.startswith(header):
+                    cur_title, body, current_date = (cash[len(header):-(len(end) + 1)].split(sep))
+                    if target_title != cur_title:
+                        notes += cash
+                    cash = ''
+            else:
+                cash += "\n"
+                continue
+    with open("notes.txt", mode='w', encoding="utf-8") as file:
+        file.write(notes)
+
 
 while True:
     command = input("Введите команду: ")
@@ -69,5 +88,9 @@ while True:
             notes: list = get_notes_date(date)
             for note in notes:
                 print(note)
+        case "del_title":
+            target_title = input("Введите заголовок заметки: ")
+            del_notes_title(target_title)
+
         case "exit":
             break
